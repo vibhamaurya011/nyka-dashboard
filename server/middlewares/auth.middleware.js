@@ -9,11 +9,11 @@ const auth = (req, res, next) => {
                 req.body.userId = decoded.userId;
                 next();
             } else {
-                res.status(401).send("Unauthorized User");
+                res.status(401).josn({message:"Unauthorized User"});
             }
         });
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({error:err.message});
     }
 };
 
