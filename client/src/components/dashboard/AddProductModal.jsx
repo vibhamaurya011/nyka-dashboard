@@ -1,76 +1,42 @@
 import React, { useState } from 'react';
-import productService from '../services/productService'; // Service to interact with the backend
 
-function AddProductModal({ onClose }) {
-  const [productData, setProductData] = useState({
-    name: '',
-    description: '',
-    gender: '',
-    category: '',
-    price: 0,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProductData({ ...productData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+const AddProductModal = ({ showModal, setShowModal }) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await productService.addProduct(productData); // Call your service to add the product
-      onClose(); // Close the modal after adding the product
-    } catch (error) {
-      // Handle error adding product
-    }
+    // Handle form submission logic
+    setShowModal(false);
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-md">
-        <h2 className="text-xl font-semibold mb-4">Add New Product</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Product Name"
-              value={productData.name}
-              onChange={handleInputChange}
-              className="border rounded-md p-2 w-full"
-            />
+    <>
+      {showModal && (
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-8 rounded-md">
+            <form onSubmit={handleSubmit}>
+              {/* Your form fields */}
+              {/* Name, Picture URL, Description, Gender, Category, Price */}
+              {/* ... */}
+              <div className="flex justify-end mt-4">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  className="ml-4 text-gray-500 px-4 py-2 rounded-md shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
-          {/* Add other input fields for description, gender, category, price */}
-          {/* Example:
-          <div className="mb-4">
-            <input
-              type="text"
-              name="description"
-              placeholder="Product Description"
-              value={productData.description}
-              onChange={handleInputChange}
-              className="border rounded-md p-2 w-full"
-            />
-          </div> */}
-          {/* Add input fields for other product details */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            >
-              Add Product
-            </button>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 ml-2 bg-gray-500 text-white rounded-md"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
-}
+};
 
 export default AddProductModal;
